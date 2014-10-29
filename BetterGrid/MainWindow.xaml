@@ -1,0 +1,13 @@
+﻿<Window x:Class="BetterGrid.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:BetterGrid"
+        Title="MainWindow" Height="350" Width="525"
+        WindowState="Maximized">
+    <Grid>
+        <loc:BetterGridControl x:Name="bg"
+                               Cells="{Binding Cells}"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="LEft"/>
+    </Grid>
+</Window>

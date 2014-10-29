@@ -1,0 +1,81 @@
+﻿<Application x:Class="BetterGrid.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:BetterGrid"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Style TargetType="loc:BetterGridControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type loc:BetterGridControl}">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="GridSplitter">
+                                <Setter Property="Background"
+                                        Value="Yellow"/>
+                                <Setter Property="Focusable"
+                                        Value="False"/>
+                            </Style>
+                        </ControlTemplate.Resources>
+
+                        <Grid x:Name="PART_Grid"
+                              Background="Red">
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="loc:BetterGridHeader">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type loc:BetterGridHeader}">
+                        <Border BorderBrush="DarkGray"
+                                BorderThickness="1"
+                                Background="LightGray">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="loc:BetterGridCell">
+            <Setter Property="Background"
+                    Value="LightGray"/>
+            <Setter Property="BorderBrush"
+                    Value="DarkGray"/>
+            <Setter Property="BorderThickness"
+                    Value="1"/>
+            <Setter Property="IsSelected"
+                    Value="{Binding IsSelected, Mode=TwoWay}"/>
+            <Setter Property="IsEditing"
+                    Value="{Binding IsEditing, Mode=TwoWay}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type loc:BetterGridCell}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter Content="{Binding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="Blue"/>
+                </Trigger>
+                <Trigger Property="IsEditing"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="YellowGreen"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Application.Resources>
+</Application>
