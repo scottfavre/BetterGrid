@@ -244,7 +244,7 @@ namespace BetterGrid
 
             if(CheckArrowKeys(e, out newLoc))
             {
-                StopEditing();
+                StopEditing(commit: true);
                 if(Keyboard.Modifiers == ModifierKeys.None)
                 {
                     _selectOrigin = null;
@@ -258,7 +258,15 @@ namespace BetterGrid
                 }
                 e.Handled = true;
             }
-            else if(e.Key == Key.E)
+            else if(CheckAbortEdit(e.Key))
+            {
+                StopEditing(commit: false);
+            }
+            else if(CheckCommitEdit(e.Key))
+            {
+                StopEditing(commit: true);
+            }
+            else
             {
                 var focusedCell = FocusManager.GetFocusedElement(this) as BetterGridCell;
                 if (focusedCell == null)
@@ -270,14 +278,12 @@ namespace BetterGrid
         }
 
 
-
-
         private bool CheckArrowKeys(KeyEventArgs e, out GridLoc newLoc)
         {
             newLoc = new GridLoc(0, 0);
 
-            var fe = FocusManager.GetFocusedElement(this);
-            var focusedCell = FocusManager.GetFocusedElement(this) as BetterGridCell;
+            var fe = FocusManager.GetFocusedElement(this) as DependencyObject;
+            var focusedCell = fe as BetterGridCell ?? FindParent<BetterGridCell>(fe);
 
             if(focusedCell == null) 
                 return false;
@@ -314,7 +320,21 @@ namespace BetterGrid
 
             return newLoc != focusedCell.Cell.Loc;
         }
-       
+
+
+        private bool CheckAbortEdit(Key key)
+        {
+            return key == Key.Escape && EditingCell != null;
+        }
+
+
+        private bool CheckCommitEdit(Key key)
+        {
+            return EditingCell != null &&
+                EditingCell.IsEditing &&
+                (key == Key.Enter || key == Key.Return || key == Key.Tab || key == Key.OemBackTab);
+        }
+
 
         private void SelectCell(ICell cell)
         {
@@ -371,7 +391,7 @@ namespace BetterGrid
         {
             ClearSelection();
 
-            StopEditing();
+            StopEditing(commit: true);
 
             cell.IsEditing = true;
 
@@ -380,13 +400,29 @@ namespace BetterGrid
             _selectOrigin = cell.Loc;
         }
 
-        private void StopEditing()
+        private void StopEditing(bool commit)
         {
             if (EditingCell != null)
             {
-                EditingCell.IsEditing = false;
+                if (commit)
+                    EditingCell.CommitEdit();
+                else
+                    EditingCell.AbortEdit();
                 EditingCell = null;
             }
+        }
+
+
+        private T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+            while (parent != null && !(parent is T))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return (parent as T);
         }
     }
 }

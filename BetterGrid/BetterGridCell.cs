@@ -34,9 +34,7 @@ namespace BetterGrid
                 PART_Editor.SelectAll();
             }
         }
-
-
-
+        
         public ICell Cell
         {
             get { return (ICell)GetValue(CellProperty); }
