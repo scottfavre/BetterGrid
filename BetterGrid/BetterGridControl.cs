@@ -266,7 +266,14 @@ namespace BetterGrid
             {
                 StopEditing(commit: true);
             }
-            else
+            Console.WriteLine("E: Select Origin: " + _selectOrigin);
+        }
+
+        protected override void OnPreviewTextInput(TextCompositionEventArgs e)
+        {
+            base.OnPreviewTextInput(e);
+
+            if(e.Text != null)
             {
                 var focusedCell = FocusManager.GetFocusedElement(this) as BetterGridCell;
                 if (focusedCell == null)
@@ -274,7 +281,6 @@ namespace BetterGrid
 
                 EditCell(focusedCell.Cell);
             }
-            Console.WriteLine("E: Select Origin: " + _selectOrigin);
         }
 
 
@@ -334,7 +340,6 @@ namespace BetterGrid
                 EditingCell.IsEditing &&
                 (key == Key.Enter || key == Key.Return || key == Key.Tab || key == Key.OemBackTab);
         }
-
 
         private void SelectCell(ICell cell)
         {
