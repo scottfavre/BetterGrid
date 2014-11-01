@@ -64,6 +64,7 @@
     <Compile Include="BetterGridCell.cs" />
     <Compile Include="BetterGridControl.cs" />
     <Compile Include="BetterGridHeader.cs" />
+    <Compile Include="BoolToVisConverter.cs" />
     <Compile Include="CellImpl.cs" />
     <Compile Include="GridLoc.cs" />
     <Compile Include="ICell.cs" />

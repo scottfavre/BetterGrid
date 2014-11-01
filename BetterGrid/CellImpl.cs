@@ -8,6 +8,8 @@ namespace BetterGrid
 {
     public class CellImpl: ICell
     {
+        private string _origText;
+
         public GridLoc Loc { get; set; }
 
         public System.Windows.Thickness Border { get; set; }
@@ -31,8 +33,23 @@ namespace BetterGrid
             get { return _isEditing; }
             set
             {
-                _isEditing = value;
-                RaisePropertyChanged("IsEditing");
+                if (_isEditing != value)
+                {
+                    _isEditing = value;
+                    RaisePropertyChanged("IsEditing");
+                    _origText = Text;
+                }
+            }
+        }
+
+        private string _text;
+        public string Text
+        {
+            get { return _text; }
+            set
+            {
+                _text = value;
+                RaisePropertyChanged("Text");
             }
         }
 
@@ -44,5 +61,19 @@ namespace BetterGrid
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(property));
         }
+
+        public void CommitEdit()
+        {
+            _origText = null;
+            IsEditing = false;
+        }
+
+        public void AbortEdit()
+        {
+            Text = _origText;
+            IsEditing = false;
+        }
+
+
     }
 }

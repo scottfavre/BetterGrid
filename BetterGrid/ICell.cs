@@ -15,5 +15,10 @@ namespace BetterGrid
         bool IsSelected { get; set; }
         bool IsFocused { get; set; }
         bool IsEditing { get; set; }
+
+        string Text { get; set; }
+
+        void CommitEdit();
+        void AbortEdit();
     }
 }

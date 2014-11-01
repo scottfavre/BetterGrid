@@ -4,6 +4,8 @@
              xmlns:loc="clr-namespace:BetterGrid"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <loc:BoolToVisConverter x:Key="BoolToVis"/>
+        
         <Style TargetType="loc:BetterGridControl">
             <Setter Property="Template">
                 <Setter.Value>
@@ -52,13 +54,27 @@
                     Value="{Binding IsSelected, Mode=TwoWay}"/>
             <Setter Property="IsEditing"
                     Value="{Binding IsEditing, Mode=TwoWay}"/>
+            <Setter Property="Text"
+                    Value="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type loc:BetterGridCell}">
                         <Border Background="{TemplateBinding Background}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter Content="{Binding}"/>
+                            <Grid>
+                                <TextBlock Text="{TemplateBinding Text}"
+                                           Visibility="{Binding IsEditing, 
+                                                                RelativeSource={RelativeSource TemplatedParent},
+                                                                Converter={StaticResource BoolToVis}, 
+                                                                ConverterParameter=False}"/>
+                                <TextBox Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Visibility="{Binding IsEditing, 
+                                                              RelativeSource={RelativeSource TemplatedParent},
+                                                              Converter={StaticResource BoolToVis}, 
+                                                              ConverterParameter=True}"
+                                         x:Name="PART_Editor"/>
+                            </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>

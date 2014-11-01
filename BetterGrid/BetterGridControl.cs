@@ -91,7 +91,7 @@ namespace BetterGrid
             int numCols = cells.GetLength(ColArrayIndex);
 
             var rowHeight = new GridLength(25);
-            var colWidth = new GridLength(80);
+            var colWidth = new GridLength(120);
             var cellMargin = new Thickness(1);
 
             var tb = new TextBlock()
