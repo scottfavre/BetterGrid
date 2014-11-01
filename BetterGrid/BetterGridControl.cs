@@ -94,16 +94,6 @@ namespace BetterGrid
             var colWidth = new GridLength(120);
             var cellMargin = new Thickness(1);
 
-            var tb = new TextBlock()
-            {
-                Text = "Hello World",
-            };
-
-            tb.SetValue(Grid.RowProperty, 1);
-            tb.SetValue(Grid.ColumnProperty, 1);
-
-            grid.Children.Add(tb);
-
             grid.RowDefinitions.Add(new RowDefinition() { Height = rowHeight });                // row header
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(25) });  // col header
 
