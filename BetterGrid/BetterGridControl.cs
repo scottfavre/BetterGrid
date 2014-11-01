@@ -209,9 +209,19 @@ namespace BetterGrid
 
             if (cell != null)
             {
+                StopEditing(commit: true);
+                
+                if (cell.IsSelected)
+                {
+                    EditCell(cell.Cell);
+                }
+                else
+                {
+                    cell.Focus();
+                }
+
                 ClearSelection();
                 SelectCell(cell.Cell);
-                cell.Focus();
                 _selectOrigin = cell.Cell.Loc;
             }
             else if (header != null)
@@ -219,6 +229,7 @@ namespace BetterGrid
                 switch (header.HeaderType)
                 {
                     case HeaderType.Row:
+                        StopEditing(commit: true);
                         ClearSelection();
                         for (int col = 0; col < Cells.GetLength(ColArrayIndex); col++)
                         {
@@ -226,6 +237,7 @@ namespace BetterGrid
                         }
                         break;
                     case HeaderType.Column:
+                        StopEditing(commit: true);
                         ClearSelection();
                         for (int row = 0; row < Cells.GetLength(RowArrayIndex); row++)
                         {
@@ -233,6 +245,23 @@ namespace BetterGrid
                         }
                         break;
                 }
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if( e.LeftButton == MouseButtonState.Pressed 
+                && _selectOrigin.HasValue)
+            {
+                var hoverCell = FindParent<BetterGridCell>(e.OriginalSource as DependencyObject);
+
+                if (hoverCell == null || hoverCell.Cell.Loc == _selectOrigin.Value) return;
+
+                StopEditing(commit: true);
+
+                SelectCell(hoverCell.Cell.Loc);
             }
         }
 
